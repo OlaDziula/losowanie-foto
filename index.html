@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Losowanie fotograficzne</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      color: #444;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      margin: 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background-color: #2e86de;
+      color: white;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      font-size: 18px;
+      margin: 10px auto;
+      max-width: 600px;
+    }
+    li {
+      padding: 4px 0;
+    }
+    .group-title {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Losowanie fotograficzne</h1>
+  <button onclick="losuj()">Wylosuj zadanie</button>
+
+  <div id="wynik"></div>
+
+  <script>
+    const dane = {
+      "Perspektywy": [
+        "Perspektywa ptasia",
+        "Perspektywa żabia",
+        "Perspektywa neutralna"
+      ],
+      "Plany fotograficzne": [
+        "Plan totalny", "Plan ogólny", "Plan pełny", "Plan amerykański",
+        "Plan średni", "Półzbliżenie", "Zbliżenie", "Detal"
+      ],
+      "Schematy kompozycji": [
+        "Trójpodział", "Kompozycja centralna", "Kompozycja ukośna", "Kompozycja symetryczna",
+        "Kompozycja asymetryczna", "Kompozycja zamknięta", "Kompozycja otwarta",
+        "Kompozycja statyczna", "Kompozycja dynamiczna", "Kompozycja płaska",
+        "Kompozycja głębinowa"
+      ],
+      "Urozmaicenia kadrów": [
+        "Ciekawe perspektywy", "Wypełnienie ramy", "Zostawienie pustej przestrzeni (przestrzeń negatywna)",
+        "Izolowanie obiektu", "Zarządzanie tonem", "Symetrie i odbicia", "Linie wiodące",
+        "Wygięte linie wiodące", "Kształty geometryczne", "Naturalne ramki",
+        "Ciekawe faktury", "Rytmy i wzory", "Łamanie wzoru"
+      ]
+    };
+
+    function losujZListy(lista, liczba) {
+      const kopia = [...lista];
+      const wynik = [];
+      for (let i = 0; i < liczba; i++) {
+        const index = Math.floor(Math.random() * kopia.length);
+        wynik.push(kopia.splice(index, 1)[0]);
+      }
+      return wynik;
+    }
+
+    function losuj() {
+      const wynikDiv = document.getElementById("wynik");
+      wynikDiv.innerHTML = "";
+
+      const wyniki = {
+        "Perspektywy": losujZListy(dane["Perspektywy"], 2),
+        "Plany fotograficzne": losujZListy(dane["Plany fotograficzne"], 2),
+        "Schematy kompozycji": losujZListy(dane["Schematy kompozycji"], 1),
+        "Urozmaicenia kadrów": losujZListy(dane["Urozmaicenia kadrów"], 3),
+      };
+
+      for (const grupa in wyniki) {
+        const tytul = document.createElement("div");
+        tytul.className = "group-title";
+        tytul.textContent = grupa;
+        wynikDiv.appendChild(tytul);
+
+        const ul = document.createElement("ul");
+        wyniki[grupa].forEach(el => {
+          const li = document.createElement("li");
+          li.textContent = el;
+          ul.appendChild(li);
+        });
+        wynikDiv.appendChild(ul);
+      }
+    }
+  </script>
+</body>
+</html>
